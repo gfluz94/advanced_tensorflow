@@ -14,6 +14,14 @@ GIF_PATH = './animation.gif'
 
 class VisCallback(Callback):
     def __init__(self, inputs, ground_truth, display_freq=10, n_samples=10):
+        '''Custom CallBack designed to visualize predictions x ground truth in mnist dataset
+
+        Attributes:
+            inputs      input array
+            ground_truth       true labels
+            display_freq        number of epochs after which a checkpoint image is displayed
+            n_samples       how many examples will be sampled and then displayed per epoch
+        '''
         self.inputs = inputs
         self.ground_truth = ground_truth
         self.images = []
@@ -21,8 +29,14 @@ class VisCallback(Callback):
         self.n_samples = n_samples
 
     def on_epoch_end(self, epoch, logs=None):
-        indexes = np.random.choice(len(self.inputs), size=self.n_samples)
-        X_test, y_test = self.inputs[indexes], self.ground_truth[indexes]
+        '''Building visualization on epoch end
+
+        Attributes:
+            epoch      epoch number
+            logs        if user wants to account for logs
+        '''
+        indexes = np.random.choice(len(self.inputs), size=self.n_samples, dtype="int32")
+        X_test, y_test = self.inputs[indexes, ...], self.ground_truth[indexes, ...]
         true_labels = np.argmax(y_test, axis=1)
         predictions = np.argmax(self.model.predict(X_test), axis=1)
 
