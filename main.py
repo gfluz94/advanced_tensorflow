@@ -7,7 +7,7 @@ from custom_losses import MyCategoricalCrossEntropy
 from custom_callbacks import VisCallback
 
 def get_mnist_data(rgb_channel=True, scale=True, one_hot_encode=True):
-    (X_train, y_train), (X_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+    (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
     if rgb_channel:
         X_train = K.expand_dims(X_train, axis=-1)
         X_test = K.expand_dims(X_test, axis=-1)
