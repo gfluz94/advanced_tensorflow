@@ -35,12 +35,12 @@ class VisCallback(Callback):
             epoch      epoch number
             logs        if user wants to account for logs
         '''
-        indexes = np.random.choice(len(self.inputs), size=self.n_samples, dtype="int32")
-        X_test, y_test = self.inputs[indexes, ...], self.ground_truth[indexes, ...]
+        min_slice = np.random.choice(np.arange(len(self.inputs)-10))
+        X_test, y_test = self.inputs[min_slice:min_slice+10, ...], self.ground_truth[min_slice:min_slice+10, ...]
         true_labels = np.argmax(y_test, axis=1)
         predictions = np.argmax(self.model.predict(X_test), axis=1)
 
-        display_digits(X_test, predictions, y_test, epoch, n=self.display_freq)
+        display_digits(X_test, predictions, true_labels, epoch, n=10)
 
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
@@ -65,7 +65,7 @@ def display_digits(inputs, outputs, ground_truth, epoch, n=10):
     inputs = np.reshape(inputs, [n, 28, 28])
     inputs = np.swapaxes(inputs, 0, 1)
     inputs = np.reshape(inputs, [28, 28*n])
-    plt.imshow(inputs)
+    plt.imshow(inputs, cmap="gray")
     plt.xticks([28*x+14 for x in range(n)], outputs)
     for i,t in enumerate(plt.gca().xaxis.get_ticklabels()):
         if outputs[i] == ground_truth[i]: 
