@@ -9,6 +9,11 @@ from custom_layers import MyDenseLayer
 class MyCustomVGG16(Model):
 
     def __init__(self, num_classes):
+        '''Custom VGG model encapsulated in one class to provide organization within application scripts
+
+        Attributes:
+            num_classes     Number of classes in classification task
+        '''
         super().__init__()
 
         conv_filters = [64, 128, 256, 512]
@@ -31,7 +36,17 @@ class MyCustomVGG16(Model):
 class Block(Model):
 
     def __init__(self, filters, kernel_size, repetitions, pool_size=2, strides=2):
+        '''Convolution followed by MaxPooling block that is repeated across VGG sctructure
+
+        Attributes:
+            filters         Number of filters in convolutional layer
+            kernel_size     Kernel size to be applied in convolutional layer
+            repetitions     Number of times concolution layer is repeated sequentially
+            pool_size       Pool size in max pooling layer
+            strides         Number os strides in max pooling layer
+        '''
         super().__init__()
+
         self.filters = filters
         self.kernel_size = kernel_size
         self.repetitions = repetitions
