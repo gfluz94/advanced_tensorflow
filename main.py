@@ -4,6 +4,7 @@ import tensorflow.keras.backend as K
 
 from custom_models import MyCustomVGG16
 from custom_losses import MyCategoricalCrossEntropy
+from custom_callbacks import VisCallback
 
 def get_mnist_data(rgb_channel=True, scale=True, one_hot_encode=True):
     (X_train, y_train), (X_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
@@ -25,7 +26,7 @@ if __name__ == "__main__":
 
     model = MyCustomVGG16(NUM_CLASSES)
     model.compile(loss=MyCategoricalCrossEntropy(weights=None), optimizer="adam", metrics=["accuracy"])
-    model.fit(X_train, y_train, batch_size=10, epochs=5)
+    model.fit(X_train, y_train, batch_size=60, epochs=5, callbacks=[VisCallback(X_test, y_test, display_freq=1)])
 
     loss, acc = model.evaluate(X_test, y_test)
     print(f"Accuracy: {100*np.round(acc, 4):.2f}%")
